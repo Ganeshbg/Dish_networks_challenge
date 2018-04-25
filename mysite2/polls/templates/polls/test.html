@@ -1,0 +1,17 @@
+<html>
+	<head>
+		<body>
+		{% if lat %}
+			{% for val in lat %}
+				<p>{{val}}</p>
+			{% endfor %}
+		{% endif %}
+            <br/>
+        {% if lon %}
+			{% for val in lon %}
+				<p>{{val}}</p>
+			{% endfor %}
+		{% endif %}
+		</body>
+	</head>
+</html>

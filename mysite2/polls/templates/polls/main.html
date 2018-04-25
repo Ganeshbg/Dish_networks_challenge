@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Adding controls to the map</title>
+	
+
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+        
+
+
+      function initMap() {
+	var infoWidow;
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: {lat: 40.013, lng: -105.260},
+          zoomControl: true,
+          scaleControl: true
+        });
+	
+	infoWidow = new google.maps.InfoWindow;
+	var latitudes = "{{lat|safe}}";
+    var longitudes = "{{lon|safe}}";
+	var infowindow = new google.maps.InfoWindow({});
+    var regex = /[+-]?\d+(\.\d+)?/g;
+
+	var marker, i;
+    var lat_array = latitudes.split(",");
+    var lon_array = longitudes.split(",");
+    var lat = [];
+          var lon = [];
+    for(i=0;i<lat_array.length;i++)
+        {
+            lat.push(lat_array[i].match(regex).map(function(v) { return parseFloat(v); }));
+        }
+    for(i=0;i<lon_array.length;i++)
+        {
+            lon.push(lon_array[i].match(regex).map(function(v) { return parseFloat(v); }));
+        }
+
+
+    for (i = 0; i < lat.length; i++) {
+        console.log(lat[i]);
+		marker = new google.maps.Marker({
+			position: new google.maps.LatLng(lat[i], lon[i]),
+			map: map
+		});
+
+		google.maps.event.addListener(marker, 'click', (function (marker, i) {
+			return function () {
+				
+				infowindow.open(map, marker);
+			}
+		})(marker, i));
+	}
+
+    
+      }
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?		key=AIzaSyCfKgd2Vmze7WP5RfjFyL3_K7Gwt4dESqc&callback=initMap">
+    </script>
+  </body>
+</html>
+
